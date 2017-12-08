@@ -25,7 +25,7 @@ class Login extends Resources\Controller
     {
 	    if($this->session->getValue('logged_in') == TRUE)
 	    {
-		    $this->redirect('dashboard');
+		    $this->redirect('home');
 	    }
 	    
 	    $data = $this->data->get_data_post();
@@ -51,7 +51,7 @@ class Login extends Resources\Controller
 		{
 			$this->mlogin->aksi_login($data['username'], $data['password']);
 			
-			$this->redirect('dashboard');
+			$this->redirect('home');
 			
 			
 			
