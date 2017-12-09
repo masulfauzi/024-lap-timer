@@ -1,4 +1,16 @@
 <?php echo $this->output('template/header'); ?>
+<script>
+	$(document).on("click", ".bahaya", function(e) {
+        var link = $(this).attr("href"); // "get" the intended link in a var
+        e.preventDefault();    
+        bootbox.confirm("Anda yakin akan menghapus Pembalap ini?", function(result) {    
+            if (result) {
+                document.location.href = link;  // if result, "set" the document location       
+            }    
+        });
+    });
+	
+</script>
         <div class="" style="min-height: 550px;">
           <div class="page-title">
           </div>
@@ -44,7 +56,7 @@
                         <td><img width="200" src="<?php echo $this->location('../assets/pembalap/'.$row->foto) ?>"></td>
                         <td><?php echo $row->tim ?></td>
                         <td><?php echo $row->kota ?></td>
-                        <td><button onclick="window.location.href='<?php echo $this->location('pembalap/edit_pembalap/'.$row->id_pembalap) ?>'" class="btn btn-info"><i class="fa fa-edit "></i> Edit</button></td>
+                        <td><button onclick="window.location.href='<?php echo $this->location('pembalap/edit_pembalap/'.$row->id_pembalap) ?>'" class="btn btn-info"><i class="fa fa-edit "></i> Edit</button> <a class="btn btn-danger bahaya" href="<?php echo $this->location('pembalap/hapus_pembalap/'.$row->id_pembalap) ?>" data-toggle="modal" data-target="#confirm-delete">Hapus</a></td>
                       </tr>
 			            <?php
 				            $no ++;

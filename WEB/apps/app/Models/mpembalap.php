@@ -81,4 +81,12 @@ class Mpembalap {
 						  
 		return $query;
 	}
+	
+	public function delete_pembalap($id)
+	{
+		$query = $this->db->where('id_pembalap', '=', $id)
+						  ->delete('pembalap');
+						  
+		return $query;
+	}
 }

@@ -152,4 +152,24 @@ class Pembalap extends Resources\Controller
 	    $this->redirect('pembalap/list_pembalap');
     }
     
+    public function hapus_pembalap($id = 0)
+    {
+	    if($id == 0)
+	    {
+		    $this->session->setValue('notification', 'Pilih salah satu pembalap untuk dihapus.');
+		    $this->redirect('pembalap/list_pembalap');
+	    }
+	    
+	    if($this->pembalap->delete_pembalap($id))
+	    {
+		    $this->session->setValue('notification', 'Pembalap dengan ID '.$id.' berhasil dihapus');
+	    }
+	    else
+	    {
+		    $this->session->setValue('notification', 'Gagal menghapus pembalap.');
+	    }
+	    
+	    $this->redirect('pembalap/list_pembalap');
+    }
+    
 }
