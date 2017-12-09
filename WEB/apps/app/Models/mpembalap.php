@@ -33,17 +33,28 @@ class Mpembalap {
 		return $query;
 	}
 	
-	public function total_page_pembalap()
+	public function pagination_pembalap($page)
 	{
 		$perpage = 10;
+		$data = array();
+		if($page == 1)
+		{
+			$mulai = 0;
+		}
+		else
+		{
+			$mulai = (($page - 1) * $perpage);
+		}
 		
 		$query = $this->db->select('count(*) as total')
 						  ->from('pembalap')
 						  ->getOne();
 						  
-		$total_halaman = ceil($query->total/$perpage);
+		$data['total_halaman'] 	= ceil($query->total/$perpage);
+		$data['mulai']			= $mulai;
 		
-		return $total_halaman;
+		
+		return $data;
 	}
 	
 	public function insert_pembalap($data)

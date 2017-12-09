@@ -33,8 +33,7 @@
                     </thead>
                     <tbody>
 	                    <?php 
-		                    $perpage = 10;
-		                    $no = (($this->uri->path(2) - 1) * $perpage) + 1;
+		                    $no = $pagination['mulai'] + 1;
 		                    foreach($pembalap as $row)
 		                    {
 			            ?>
@@ -54,7 +53,7 @@
                     </tbody>
                   </table>
 	            </div>
-	            <?php if($total_page > 1){ ?>
+	            <?php if($pagination['total_halaman'] > 1){ ?>
 	            <div class="page-nation" align="center">
                     <ul class="pagination pagination-large">
 	                    <?php

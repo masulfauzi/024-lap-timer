@@ -28,7 +28,7 @@ class Pembalap extends Resources\Controller
 	    $data	= array(
 	        'title'				=> 'List Pembalap',
 	        'pembalap'			=> $this->pembalap->get_all_pembalap($page),
-	        'total_page'	=> $this->pembalap->total_page_pembalap(),
+	        'pagination'		=> $this->pembalap->pagination_pembalap($page),
 	        'notification' 		=> $this->session->getValue('notification')
         );
         $this->session->setValue('notification','');
