@@ -1,9 +1,9 @@
 <html>
 	<head>
 		<title><?php echo $title; ?></title>
-		<link href="<?php echo $this->uri->baseUri; ?>assets/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">	
-	    <script src="<?php echo $this->uri->baseUri; ?>assets/js/jquery-1.10.2.min.js"></script>
-	    <script src="<?php echo $this->uri->baseUri; ?>assets/bootstrap/dist/js/bootstrap.min.js"></script>
+		<link href="<?php echo $this->uri->baseUri; ?>assets/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">	
+	    <script src="<?php echo $this->uri->baseUri; ?>assets/js/jquery.min.js"></script>
+	    <script src="<?php echo $this->uri->baseUri; ?>assets/js/bootstrap.min.js"></script>
 	    
 	</head>
 	<body>
