@@ -18,8 +18,11 @@
     <script src="<?php echo $this->uri->baseUri; ?>assets/js/jquery.min.js"></script>
     <!-- Bootstrap -->
     <script src="<?php echo $this->uri->baseUri; ?>assets/js/bootstrap.min.js"></script>
+    <!-- Bootbox -->
+    <script src="<?php echo $this->uri->baseUri; ?>assets/js/bootbox.min.js"></script>
     <!-- Custom Theme Style -->
     <link href="<?php echo $this->uri->baseUri; ?>assets/css/custom.min.css" rel="stylesheet">
+    
     
   </head>
 
