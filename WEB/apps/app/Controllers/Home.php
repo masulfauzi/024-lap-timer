@@ -11,23 +11,18 @@ class Home extends Resources\Controller
         $this->session          = new Resources\Session;
         $this->request          = new Resources\Request;
         $this->mhome      		= new Models\mhome;
-        $this->data      		= new Models\mdata;
         $this->db               = new Resources\Database;
-        $this->gallery 			= new Models\mgallery;
         
-        //$this->mhome->cek_login_user(array(1, 2, 3));
+        $this->mhome->cek_login_user(array(1));
     }
         
     public function index()
     {    
         $data	= array(
-	        'title'		=> 'Hello word!',
-	        'berita'	=> $this->mhome->get_berita(),
-	        'peraturan'	=> $this->data->get_data_all('peraturan'),
-	        'slide'		=> $this->gallery->get_slide()
+	        'title'		=> '024 Lap Timer'
         );
         
-        $this->output('front/landing_page', $data);
+        $this->output('home/index', $data);
     }
     
     
