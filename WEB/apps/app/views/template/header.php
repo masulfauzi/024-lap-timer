@@ -44,7 +44,7 @@
               <h3>Menu</h3>
               <ul class="nav side-menu">
 	            <?php
-		            $grup_menu = $this->mhome->generate_grup_menu();
+		            $grup_menu = $this->home->generate_grup_menu();
 			    
 		        	foreach($grup_menu as $list_grup_menu)
 		        	{
@@ -53,7 +53,7 @@
                   <ul class="nav child_menu" style="display: none">
 	                  
 	              <?php
-		              $menu = $this->mhome->generate_menu($list_grup_menu->id_grup_menu);
+		              $menu = $this->home->generate_menu($list_grup_menu->id_grup_menu);
 		              
 		              foreach($menu as $list_menu)
 		              {
