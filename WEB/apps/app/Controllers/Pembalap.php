@@ -10,12 +10,12 @@ class Pembalap extends Resources\Controller
         
         $this->session          = new Resources\Session;
         $this->request          = new Resources\Request;
-        $this->mhome      		= new Models\mhome;
+        $this->home      		= new Models\mhome;
         $this->db               = new Resources\Database;
         $this->pembalap 		= new Models\mpembalap;
         $this->upload 			= new Resources\Upload;
         
-        $this->mhome->cek_login_user(array(1));
+        $this->home->cek_login_user(array(1));
     }
         
     public function index()
@@ -54,7 +54,7 @@ class Pembalap extends Resources\Controller
                     array(
                         'folderLocation'    => 'assets/pembalap',
                         'autoRename'        => true,
-                        'setFileName'       => $data_post['nama_pembalap'],
+                        'setFileName'       => 'pembalap_'.$data_post['nama_pembalap'],
                         'autoCreateFolder'  => true,
                         'permittedFileType' => 'jpg|JPG|png|PNG|jpeg|JPEG',
                         'maximumSize'       => 10000000
@@ -93,5 +93,63 @@ class Pembalap extends Resources\Controller
 	    $this->redirect('pembalap/list_pembalap');
     }
     
+    public function edit_pembalap($id = 0)
+    {
+	    if($id == 0)
+	    {
+		    $this->session->setValue('notification', 'Pilih Pembalap yang akan diedit.');
+	    }
+	    
+	    $data = array(
+		    'title'		=> 'Edit Pembalap',
+		    'pembalap'	=> $this->pembalap->detail_pembalap($id)
+	    );
+	    
+	    $this->output('pembalap/edit_pembalap', $data);
+    }
+    
+    public function aksi_edit_pembalap()
+    {
+	    $data_post = $this->home->get_data_post();
+	    
+	    $this->upload
+                ->setOption(
+                    array(
+                        'folderLocation'    => 'assets/pembalap',
+                        'autoRename'        => true,
+                        'setFileName'       => 'pembalap_'.$data_post['nama_pembalap'],
+                        'autoCreateFolder'  => true,
+                        'permittedFileType' => 'jpg|JPG|png|PNG|jpeg|JPEG',
+                        'maximumSize'       => 10000000
+                    )
+                );
+                
+        $data['messages']   = '';
+        
+        if(isset($_FILES['foto']))
+        {
+            $file   = $this->upload->now($_FILES['foto']);
+			
+            if($file)
+            {
+                $files['messages']   = $this->upload->getFileInfo();
+                
+                $data_post['foto'] = $files['messages']['name'];
+                   
+            }
+            
+            if($this->pembalap->update_Pembalap($data_post))
+            {
+	            $this->session->setValue('notification', 'Pembalap Berhasil Diedit.');
+            }
+            else
+            {
+	            $this->session->setValue('notification', 'Gagal Mengedit Pembalap.');
+            }
+            
+        }
+	    
+	    $this->redirect('pembalap/list_pembalap');
+    }
     
 }

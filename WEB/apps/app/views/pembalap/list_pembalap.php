@@ -45,7 +45,7 @@
                         <td><img width="200" src="<?php echo $this->location('../assets/pembalap/'.$row->foto) ?>"></td>
                         <td><?php echo $row->tim ?></td>
                         <td><?php echo $row->kota ?></td>
-                        <td><button class="btn btn-info"><i class="fa fa-edit "></i> Edit</button></td>
+                        <td><button onclick="window.location.href='<?php echo $this->location('pembalap/edit_pembalap/'.$row->id_pembalap) ?>'" class="btn btn-info"><i class="fa fa-edit "></i> Edit</button></td>
                       </tr>
 			            <?php
 				            $no ++;

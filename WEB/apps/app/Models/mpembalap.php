@@ -52,4 +52,22 @@ class Mpembalap {
 		
 		return $query;
 	}
+	
+	public function detail_pembalap($id)
+	{
+		$query = $this->db->select('*')
+						  ->from('pembalap')
+						  ->where('id_pembalap', '=', $id)
+						  ->getOne();
+						  
+		return $query;
+	}
+	
+	public function update_Pembalap($data)
+	{
+		$query = $this->db->where('id_pembalap', '=', $data['id_pembalap'])
+						  ->update('pembalap', $data);
+						  
+		return $query;
+	}
 }
