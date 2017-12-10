@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Sistem Informasi Aset</title>
+    <title>024 Lap Timer System</title>
     
 
     <!-- Bootstrap -->
@@ -32,7 +32,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="<?php echo $this->location('dashboard'); ?>" class="site_title"><i class="fa fa-bar-chart"></i> <span>SIM Aset</span></a>
+              <a href="<?php echo $this->location('dashboard'); ?>" class="site_title"><i class="fa fa-flag-checkered"></i> <span>024 Timer</span></a>
             </div>
 
             <div class="clearfix"></div>
