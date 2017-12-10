@@ -47,7 +47,7 @@ class Pembalap extends Resources\Controller
     
     public function aksi_tambah_pembalap()
     {
-	    $data_post = $this->mhome->get_data_post();
+	    $data_post = $this->home->get_data_post();
 	    
 	    $this->upload
                 ->setOption(
