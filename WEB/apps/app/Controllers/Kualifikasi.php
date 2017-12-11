@@ -57,4 +57,50 @@ class Kualifikasi extends Resources\Controller
         $this->output('kualifikasi/cetak_acakan', $data);
     }
     
+    public function run_kualifikasi()
+    {
+	    $data	= array(
+	        'title'			=> 'Daftar Grup Kualifikasi',
+	        'grup'			=> $this->kualifikasi->get_grup_kualifikasi(),
+	        'notification'	=> $this->session->getValue('notification')
+        );
+        $this->session->setValue('notification', '');
+        
+        $this->output('kualifikasi/daftar_grup', $data);
+    }
+    
+    public function detail_grup_kualifikasi($grup = 0)
+    {
+	    if($grup == 0)
+	    {
+		    $this->session->setValue('notification', 'Pilih salah satu grup untuk memulai kualifikasi.');
+		    $this->redirect('kualifikasi/run_kualifikasi');
+	    }
+	    
+	    $data	= array(
+	        'title'			=> 'Detail Grup Kualifikasi',
+	        'pembalap'		=> $this->kualifikasi->get_pembalap_by_grup($grup)
+        );
+        
+        $this->output('kualifikasi/detail_grup', $data);
+    }
+    
+    public function get_waktu($channel = 1)
+    {
+	    $data	= array(
+	        'waktu'			=> $this->kualifikasi->get_lap_time($channel)
+        );
+        
+        $this->output('kualifikasi/catatan_waktu', $data);
+    }
+    
+    public function get_sinyal($channel = 1)
+    {
+	    $data	= array(
+	        'sinyal'			=> $this->kualifikasi->get_sinyal($channel)
+        );
+        
+        $this->output('kualifikasi/get_sinyal', $data);
+    }
+    
 }
