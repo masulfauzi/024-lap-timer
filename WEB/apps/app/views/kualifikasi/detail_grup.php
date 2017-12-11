@@ -43,36 +43,47 @@
     }
 </script>
 
-<!--
 <script type="text/javascript">
-
-//Calling function
-repeatAjax();
-
-
-function repeatAjax(){
-jQuery.ajax({
-          type: "POST",
-          url: '<?php echo $this->location('kualifikasi/get_sinyal') ?>',
-          dataType: 'json',
-          success: function(resp) {
-            document.getElementById('sinyal1').style.width = "60%";
-
-          },
-          complete: function() {
-                setTimeout(repeatAjax,100); //After completion of request, time to redo it after a second
-             }
+    jQuery(document).ready(function($){
+        $(".start_race").on("click",function(){
+	        document.getElementById('start_race').disabled = true;
+	        
+	        document.getElementById("timer").innerHTML = "5";
+	        setTimeout(function() {
+			    document.getElementById("timer").innerHTML = "4";
+			    setTimeout(function() {
+				    document.getElementById("timer").innerHTML = "3";
+				    setTimeout(function() {
+					    document.getElementById("timer").innerHTML = "2";
+					    setTimeout(function() {
+						    document.getElementById("timer").innerHTML = "1";
+						    setTimeout(function() {
+							    document.getElementById("timer").innerHTML = "GO!!";
+							    document.getElementById('stop_race').disabled = false;
+							    setTimeout(function() {
+								    $.ajax({
+						                url: "<?php echo $this->location('kualifikasi/start_race') ?>",
+						                type: "POST",
+						                data: { start: 1 }
+						            });
+								}, 1000);
+							}, 1000);
+						}, 1000);
+					}, 1000);
+				}, 1000);
+			}, 1000);
+            
         });
-}
+    });
 </script>
--->
+
         <div class="" style="min-height: 550px;">
           <div class="page-title">
           </div>
           <div class="clearfix"></div>
           
           <div class="row">
-            <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="col-md-6 col-sm-6 col-xs-6">
               <div class="x_panel">
                 <div class="x_title">
                   <h2><i class="fa fa-flag-checkered "></i> Detail Grup Kualifikasi <small></small></h2>
@@ -110,6 +121,25 @@ jQuery.ajax({
                     </tbody>
                   </table>
 	            </div>
+	            
+                </div>
+              </div>
+            </div>
+            
+            <div class="col-md-6 col-sm-6 col-xs-6">
+              <div class="x_panel">
+                <div class="x_title">
+                  <h2><i class="fa fa-flag-checkered "></i> Detail Kualifikasi <small></small></h2>
+                  <div align="right"></div>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+		            
+		            <button id="start_race" class="btn btn-info start_race">Start Race</button>
+		            <button id="stop_race" disabled="" class="btn btn-danger">Stop Race</button>
+		            
+<!-- 		            <div id="timer" style="font-size: 1000;"></div> -->
+		            <h1 id="timer"></h1>
 	            
                 </div>
               </div>

@@ -18,6 +18,7 @@ class Mkualifikasi {
 						  ->from('acakan', 'pembalap')
 						  ->where('acakan.id_pembalap', '=', 'pembalap.id_pembalap')
 						  ->orderBy('acakan.grup')
+						  ->orderBy('acakan.channel')
 						  ->getAll();
 						  
 		return $query;
@@ -94,6 +95,7 @@ class Mkualifikasi {
 						  ->from('acakan', 'pembalap')
 						  ->where('acakan.id_pembalap', '=', 'pembalap.id_pembalap', 'AND')
 						  ->where('acakan.grup', '=', $grup)
+						  ->orderBy('acakan.channel')
 						  ->getAll();
 						  
 		return $query;
@@ -117,5 +119,25 @@ class Mkualifikasi {
 						  ->getOne();
 						  
 		return $query;
+	}
+	
+	public function hitung_waktu($waktu_sebelumnya, $waktu_sekarang)
+	{
+		if($waktu_sebelumnya == 0)
+		{
+			$waktu = "Waktu";
+		}
+		else
+		{
+			$waktu = $waktu_sekarang - $waktu_sebelumnya;
+			
+			list($sec, $usec) = explode('.', $waktu); //split the microtime on .
+			
+			$usec = str_replace("0.", ".", $usec);     //remove the leading '0.' from usec 
+			
+			$waktu = date('i:s', $sec).".".$usec;  
+		}
+		
+		return $waktu;
 	}
 }

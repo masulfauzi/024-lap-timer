@@ -103,4 +103,34 @@ class Kualifikasi extends Resources\Controller
         $this->output('kualifikasi/get_sinyal', $data);
     }
     
+    public function start_race()
+    {
+	    $this->db->query("truncate table catatan_waktu");
+	    
+	    $waktu = microtime(true);
+	    
+	    $data1 = array(
+		    'waktu'		=> $waktu,
+		    'channel'	=> 1
+	    );
+	    $data2 = array(
+		    'waktu'		=> $waktu,
+		    'channel'	=> 3
+	    );
+	    $data3 = array(
+		    'waktu'		=> $waktu,
+		    'channel'	=> 6
+	    );
+	    $data4 = array(
+		    'waktu'		=> $waktu,
+		    'channel'	=> 8
+	    );
+	    
+	    $this->db->insert('catatan_waktu', $data1);
+	    $this->db->insert('catatan_waktu', $data2);
+	    $this->db->insert('catatan_waktu', $data3);
+	    $this->db->insert('catatan_waktu', $data4);
+	    
+    }
+    
 }
