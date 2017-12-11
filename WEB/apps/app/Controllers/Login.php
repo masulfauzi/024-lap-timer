@@ -10,8 +10,7 @@ class Login extends Resources\Controller
         
         $this->session          = new Resources\Session;
         $this->request          = new Resources\Request;
-        $this->mhome      		= new Models\mhome;
-        $this->data      		= new Models\mdata;
+        $this->home      		= new Models\mhome;
         $this->mlogin      		= new Models\mlogin;
         $this->db               = new Resources\Database;
     }
@@ -28,13 +27,13 @@ class Login extends Resources\Controller
 		    $this->redirect('home');
 	    }
 	    
-	    $data = $this->data->get_data_post();
+	    $data = $this->home->get_data_post();
 		
 		if(empty($data['token']))
 		{
 			$data = array(
 			    'title'	=> "Selamat Datang di SiAgung",
-			    'token'	=> $this->mhome->generate_token(),
+			    'token'	=> $this->home->generate_token(),
 			    'error'	=> $this->session->getValue('error_messages')
 		    );
 		    
