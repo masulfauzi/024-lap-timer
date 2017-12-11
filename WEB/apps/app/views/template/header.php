@@ -32,7 +32,7 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="<?php echo $this->location('dashboard'); ?>" class="site_title"><i class="fa fa-flag-checkered"></i> <span>024 Timer</span></a>
+              <a href="<?php echo $this->location('home'); ?>" class="site_title"><i class="fa fa-flag-checkered"></i> <span>024 Timer</span></a>
             </div>
 
             <div class="clearfix"></div>
