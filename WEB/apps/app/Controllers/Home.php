@@ -10,10 +10,10 @@ class Home extends Resources\Controller
         
         $this->session          = new Resources\Session;
         $this->request          = new Resources\Request;
-        $this->mhome      		= new Models\mhome;
+        $this->home      		= new Models\mhome;
         $this->db               = new Resources\Database;
         
-        $this->mhome->cek_login_user(array(1));
+        $this->home->cek_login_user(array(1));
     }
         
     public function index()
