@@ -15,10 +15,10 @@ class Mkualifikasi {
 	public function get_pembalap_acak()
 	{
 		$query = $this->db->select('*')
-						  ->from('acakan', 'pembalap')
-						  ->where('acakan.id_pembalap', '=', 'pembalap.id_pembalap')
-						  ->orderBy('acakan.grup')
-						  ->orderBy('acakan.channel')
+						  ->from('grup_kualifikasi', 'pembalap')
+						  ->where('grup_kualifikasi.id_pembalap', '=', 'pembalap.id_pembalap')
+						  ->orderBy('grup_kualifikasi.grup')
+						  ->orderBy('grup_kualifikasi.channel')
 						  ->getAll();
 						  
 		return $query;
@@ -27,7 +27,7 @@ class Mkualifikasi {
 	public function acak_pembalap()
 	{
 		//kosongkan tabel acakan
-		if($this->db->query('truncate table acakan'))
+		if($this->db->query('truncate table grup_kualifikasi'))
 		{
 			//baca pembalap dari tabel pembalap
 			if($pembalap = $this->db->orderBy('rand()')->getAll('pembalap'))
@@ -42,7 +42,7 @@ class Mkualifikasi {
 						'channel'		=> $this->get_channel($no)
 					);
 					
-					$this->db->insert('acakan', $data);
+					$this->db->insert('grup_kualifikasi', $data);
 					$no ++;
 				}
 			}
@@ -82,7 +82,7 @@ class Mkualifikasi {
 	public function get_grup_kualifikasi()
 	{
 		$query = $this->db->select('*')
-						  ->from('acakan')
+						  ->from('grup_kualifikasi')
 						  ->groupBy('grup')
 						  ->getAll();
 						  
@@ -92,10 +92,10 @@ class Mkualifikasi {
 	public function get_pembalap_by_grup($grup)
 	{
 		$query = $this->db->select('*')
-						  ->from('acakan', 'pembalap')
-						  ->where('acakan.id_pembalap', '=', 'pembalap.id_pembalap', 'AND')
-						  ->where('acakan.grup', '=', $grup)
-						  ->orderBy('acakan.channel')
+						  ->from('grup_kualifikasi', 'pembalap')
+						  ->where('grup_kualifikasi.id_pembalap', '=', 'pembalap.id_pembalap', 'AND')
+						  ->where('grup_kualifikasi.grup', '=', $grup)
+						  ->orderBy('grup_kualifikasi.channel')
 						  ->getAll();
 						  
 		return $query;
@@ -121,23 +121,86 @@ class Mkualifikasi {
 		return $query;
 	}
 	
-	public function hitung_waktu($waktu_sebelumnya, $waktu_sekarang)
+	public function format_waktu($waktu)
+	{		
+		list($sec, $usec) = explode('.', $waktu); //split the microtime on .
+		
+		$usec = str_replace("0.", ".", $usec);     //remove the leading '0.' from usec 
+		
+		$waktu = date('i : s', $sec).". ".$usec;  
+		
+		
+		return $waktu;
+	}
+	
+	public function get_hasil_kualifikasi_grup($grup)
 	{
-		if($waktu_sebelumnya == 0)
+		$query = $this->db->select('*')
+						  ->from('hasil_kualifikasi', 'pembalap')
+						  ->where('hasil_kualifikasi.grup', '=', $grup, 'AND')
+						  ->where('hasil_kualifikasi.id_pembalap', '=', 'pembalap.id_pembalap')
+						  ->orderBy('hasil_kualifikasi.waktu', 'ASC')
+						  ->getAll();
+						  
+		return $query;
+	}
+	
+	public function hasil_kualifikasi()
+	{
+		$query = $this->db->select('*')
+						  ->from('hasil_kualifikasi', 'pembalap')
+						  ->where('hasil_kualifikasi.id_pembalap', '=', 'pembalap.id_pembalap')
+						  ->orderBy('waktu', 'ASC')
+						  ->getAll();
+						  
+		return $query;
+	}
+	
+	public function cek_waktu($waktu)
+	{
+		if($waktu == '10000000000.000')
 		{
-			$waktu = "Waktu";
+			$waktu = "DNF";
 		}
 		else
 		{
-			$waktu = $waktu_sekarang - $waktu_sebelumnya;
+			$menit = floor($waktu/60);
 			
-			list($sec, $usec) = explode('.', $waktu); //split the microtime on .
-			
-			$usec = str_replace("0.", ".", $usec);     //remove the leading '0.' from usec 
-			
-			$waktu = date('i:s', $sec).".".$usec;  
+			if($menit >= 1)
+			{
+				$detik = $waktu - ($menit*60);
+				
+				if($detik < 10)
+				{
+					$detik = "0".$detik;
+				}
+				
+				$waktu = $menit.":".$detik;
+			}
+			else
+			{
+				$menit = "0";
+				
+				if($waktu < 10)
+				{
+					$detik = "0".$waktu;
+				}
+				
+				$waktu = $menit.":".$detik;;
+			}
 		}
 		
 		return $waktu;
+	}
+	
+	public function get_hasil_kualifikasi()
+	{
+		$query = $this->db->select('*')
+						  ->from('hasil_kualifikasi', 'pembalap')
+						  ->where('hasil_kualifikasi.id_pembalap', '=', 'pembalap.id_pembalap')
+						  ->orderBy('hasil_kualifikasi.waktu', 'ASC')
+						  ->getAll();
+						  
+		return $query;
 	}
 }

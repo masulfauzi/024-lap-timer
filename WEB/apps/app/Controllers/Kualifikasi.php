@@ -106,31 +106,80 @@ class Kualifikasi extends Resources\Controller
     public function start_race()
     {
 	    $this->db->query("truncate table catatan_waktu");
+	    $this->db->query("truncate table waktu_mulai");
 	    
-	    $waktu = microtime(true);
-	    
-	    $data1 = array(
-		    'waktu'		=> $waktu,
-		    'channel'	=> 1
-	    );
-	    $data2 = array(
-		    'waktu'		=> $waktu,
-		    'channel'	=> 3
-	    );
-	    $data3 = array(
-		    'waktu'		=> $waktu,
-		    'channel'	=> 6
-	    );
-	    $data4 = array(
-		    'waktu'		=> $waktu,
-		    'channel'	=> 8
+	    $data = array(
+		    'waktu_mulai'		=> microtime(true)
 	    );
 	    
-	    $this->db->insert('catatan_waktu', $data1);
-	    $this->db->insert('catatan_waktu', $data2);
-	    $this->db->insert('catatan_waktu', $data3);
-	    $this->db->insert('catatan_waktu', $data4);
+	    $this->db->insert('waktu_mulai', $data);
 	    
     }
     
+    public function simpan_hasil_kualifikasi($grup_kualifikasi)
+    {
+	    $data = array();
+	    
+	    $pembalap = $this->db->select('*')
+	    					 ->from('grup_kualifikasi')
+	    					 ->where('grup', '=', $grup_kualifikasi)
+	    					 ->getAll();
+	    					 
+	    foreach ($pembalap as $row)
+	    {
+		    $query = $this->db->select('min(catatan_waktu.lap) as waktu')
+		    				  ->from('catatan_waktu')
+		    				  ->where('catatan_waktu.channel', '=', $row->channel)
+		    				  ->getOne();
+		    
+		    if($query->waktu)
+		    {
+			    $waktu = $query->waktu;
+		    }
+		    else
+		    {
+			    $waktu = "9999999999";
+		    }
+		    				  
+		    $data = array(
+			    'waktu'			=> $waktu,
+			    'id_pembalap'	=> $row->id_pembalap,
+			    'grup'			=> $row->grup
+		    );
+		    
+		    $this->db->insert('hasil_kualifikasi', $data);
+	    }
+	    	    
+    }
+    
+    public function cetak_hasil_kualifikasi_grup($grup)
+    {
+	    $data = array(
+		    'hasil'		=> $this->kualifikasi->get_hasil_kualifikasi_grup($grup),
+		    'grup'		=> $grup
+	    );
+	    
+	    $this->output('kualifikasi/cetak_hasil_kualifikasi_grup', $data);
+    }
+    
+    public function hasil_kualifikasi()
+    {
+	    $data	= array(
+	        'title'				=> 'Acak Pembalap',
+	        'hasil_kualifikasi'	=> $this->kualifikasi->hasil_kualifikasi(),
+	        'notification'		=> $this->session->getValue('notification')
+        );
+        $this->session->setValue('notification', '');
+        
+        $this->output('kualifikasi/hasil_kualifikasi', $data);
+    }
+    
+    public function cetak_hasil_kualifikasi()
+    {
+	    $data = array(
+		    'hasil'		=> $this->kualifikasi->get_hasil_kualifikasi()
+	    );
+	    
+	    $this->output('kualifikasi/cetak_hasil_kualifikasi', $data);
+    }
 }

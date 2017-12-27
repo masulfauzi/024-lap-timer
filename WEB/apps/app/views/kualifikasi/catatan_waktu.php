@@ -1,14 +1,15 @@
 <table class="table table-bordered">
+	<tr>
+		<td>Waktu</td>
+	</tr>
 	<?php
-		$waktu_sebelumnya = 0;
 		foreach($waktu as $row)
 		{
 	?>
 	<tr>
-		<td><?php echo $this->kualifikasi->hitung_waktu($waktu_sebelumnya, $row->waktu) ?></td>
+		<td><?php echo $this->kualifikasi->format_waktu($row->lap) ?></td>
 	</tr>
 	<?php
-		$waktu_sebelumnya = $row->waktu;
 		}
 	?>
 </table>

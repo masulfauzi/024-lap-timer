@@ -1,11 +1,40 @@
 <?php echo $this->output('template/header'); ?>
 
 <script type="text/javascript">
+/*
     $(document).ready(function(){
       refreshTable();
     });
+*/
+
+	var timer_is_on = 0;
+	var t;
+	
+	function startCount() {
+	    if (!timer_is_on) {
+	        timer_is_on = 1;
+	        refreshTable();
+	    }
+	}
+	
+	function stopCount() {
+	    clearTimeout(t);
+	    timer_is_on = 0;
+	}
 	
 	function refreshTable(){
+		
+		<?php 
+			foreach($pembalap as $row3)
+			{
+		?>
+		$('#tableHolder_<?php echo $row3->channel ?>').load('<?php echo $this->location('kualifikasi/get_waktu/'.$row3->channel) ?>', function(){
+           //setTimeout(refreshTable, 5000);
+        });
+		<?php
+			}
+		?>
+/*
         $('#tableHolder_1').load('<?php echo $this->location('kualifikasi/get_waktu/1') ?>', function(){
            //setTimeout(refreshTable, 5000);
         });
@@ -16,16 +45,22 @@
            //setTimeout(refreshTable, 5000);
         });
         $('#tableHolder_8').load('<?php echo $this->location('kualifikasi/get_waktu/8') ?>', function(){
-           
+           //t = setTimeout(refreshTable, 2000);
         });
-        setTimeout(refreshTable, 2000);
+*/
+        
+        t = setTimeout(refreshTable, 2000);
+        
     }
 </script>
 
 <script type="text/javascript">
+/*
     $(document).ready(function(){
       refreshsinyal();
     });
+*/
+	var myVar;
 	
 	function refreshsinyal(){
         $('#sinyal_1').load('<?php echo $this->location('kualifikasi/get_sinyal/1') ?>', function(){
@@ -38,9 +73,14 @@
            //setTimeout(refreshTable, 5000);
         });
         $('#sinyal_8').load('<?php echo $this->location('kualifikasi/get_sinyal/8') ?>', function(){
-           setTimeout(refreshsinyal, 2000);
+           
+	        myVar = setTimeout(refreshsinyal, 2000);
+           
+           
         });
     }
+    
+    
 </script>
 
 <script type="text/javascript">
@@ -52,21 +92,27 @@
 	        setTimeout(function() {
 			    document.getElementById("timer").innerHTML = "4";
 			    setTimeout(function() {
+				    var audio = new Audio('<?php echo $this->location('../assets/sound/start_race.wav') ?>');
+					audio.play();
 				    document.getElementById("timer").innerHTML = "3";
 				    setTimeout(function() {
 					    document.getElementById("timer").innerHTML = "2";
 					    setTimeout(function() {
 						    document.getElementById("timer").innerHTML = "1";
 						    setTimeout(function() {
+							    
 							    document.getElementById("timer").innerHTML = "GO!!";
 							    document.getElementById('stop_race').disabled = false;
+							    
+// 							    x = 1;
 							    setTimeout(function() {
 								    $.ajax({
 						                url: "<?php echo $this->location('kualifikasi/start_race') ?>",
 						                type: "POST",
 						                data: { start: 1 }
 						            });
-								}, 1000);
+								}, 1);
+								startCount();
 							}, 1000);
 						}, 1000);
 					}, 1000);
@@ -74,6 +120,31 @@
 			}, 1000);
             
         });
+    });
+</script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+        $(".stop_race").on("click",function(){
+	        stopCount();
+	        document.getElementById('stop_race').disabled = true;
+	        document.getElementById('simpan_hasil').disabled = false;
+	        document.getElementById('cetak_hasil').disabled = false;
+	        document.getElementById("timer").innerHTML = "STOP";
+	    });
+    });
+</script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+        $(".simpan_hasil").on("click",function(){
+	        $.ajax({
+                url: "<?php echo $this->location('kualifikasi/simpan_hasil_kualifikasi/'.$this->uri->path(2)) ?>",
+                type: "POST",
+                data: { start: 1 }
+            });
+            document.getElementById("timer").innerHTML = "Berhasil disimpan";
+	    });
     });
 </script>
 
@@ -135,8 +206,11 @@
                 </div>
                 <div class="x_content">
 		            
-		            <button id="start_race" class="btn btn-info start_race">Start Race</button>
-		            <button id="stop_race" disabled="" class="btn btn-danger">Stop Race</button>
+		            <button id="start_race" class="btn btn-info start_race"><i class="fa fa-flag-checkered "></i> Start Race</button>
+		            <button id="stop_race" disabled="" class="btn btn-danger stop_race"><i class="fa fa-stop "></i> Stop Race</button>
+		            <br>
+		            <button id="simpan_hasil" disabled="" class="btn btn-default simpan_hasil"><i class="fa fa-save "></i> Simpan Hasil</button>
+		            <button onClick="MyWindow=window.open('<?php echo $this->location('kualifikasi/cetak_hasil_kualifikasi_grup/'.$this->uri->path(2)) ?>','Cetak Acakan',width=300,height=300); return false;" id="cetak_hasil" disabled="" class="btn btn-alert cetak_hasil"><i class="fa fa-print "></i> Cetak Hasil</button>
 		            
 <!-- 		            <div id="timer" style="font-size: 1000;"></div> -->
 		            <h1 id="timer"></h1>
